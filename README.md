@@ -1,1 +1,0 @@
-# kursach_django
