@@ -19,9 +19,13 @@
                     <td>
                         <a href="{% url 'mailing:client_detail' client.pk %}"
                            class="btn btn-info btn-sm">Просмотреть</a>
+                        {% if user == client.owner or user.is_superuser or perms.mailing.can_deactivate_mailing %}
                         <a href="{% url 'mailing:client_update' client.pk %}"
                            class="btn btn-warning btn-sm">Изменить</a>
+                        {% endif %}
+                        {% if user == client.owner %}
                         <a href="{% url 'mailing:client_delete' client.pk %}" class="btn btn-danger btn-sm">Удалить</a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
