@@ -19,7 +19,7 @@
                     <td>
                         <a href="{% url 'mailing:message_detail' message.pk %}"
                            class="btn btn-info btn-sm">Просмотреть</a>
-                        {% if user.is_authenticated %}
+                        {% if user == message.owner %}
                             <a href="{% url 'mailing:message_update' message.pk %}"
                                class="btn btn-warning btn-sm">Изменить</a>
                             <a href="{% url 'mailing:message_delete' message.pk %}"
