@@ -59,7 +59,7 @@ class ClientCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("mailing:client_list")
 
     def form_valid(self, form):
-        # фун-ция по созданию клиента только авторизаванных пользователей
+        # фун-ция по созданию клиента только авторизованных пользователей
         client = form.save()
         user = self.request.user
         client.owner = user
@@ -67,16 +67,28 @@ class ClientCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ClientUpdateView(UpdateView):
+class ClientUpdateView(UpdateView, LoginRequiredMixin):
     model = Client
     form_class = ClientForm
     success_url = reverse_lazy("mailing:client_list")
 
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner:
+            return ClientForm
+        raise PermissionDenied
 
-class ClientDeleteView(DeleteView):
+
+class ClientDeleteView(DeleteView, LoginRequiredMixin):
     model = Client
     template_name = "mailing/client_confirm_delete.html"
     success_url = reverse_lazy("mailing:client_list")
+
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner:
+            return ClientForm
+        raise PermissionDenied
 
 
 # CRUD для сообщений
@@ -117,13 +129,13 @@ class MessageCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class MessageUpdateView(UpdateView):
+class MessageUpdateView(UpdateView, LoginRequiredMixin):
     model = Message
     form_class = MessageForm
     success_url = reverse_lazy("mailing:message_list")
 
 
-class MessageDeleteView(DeleteView):
+class MessageDeleteView(DeleteView, LoginRequiredMixin):
     model = Message
     template_name = "mailing/message_confirm_delete.html"
     success_url = reverse_lazy("mailing:message_list")
@@ -167,7 +179,7 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class MailingUpdateView(UpdateView):
+class MailingUpdateView(UpdateView, LoginRequiredMixin):
     model = Mailing
     form_class = MailingForm
     success_url = reverse_lazy("mailing:mailing_list")
@@ -189,10 +201,16 @@ class MailingUpdateView(UpdateView):
         raise PermissionDenied
 
 
-class MailingDeleteView(DeleteView):
+class MailingDeleteView(DeleteView, LoginRequiredMixin):
     model = Mailing
     template_name = "mailing/mailing_confirm_delete.html"
     success_url = reverse_lazy("mailing:mailing_list")
+
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner:
+            return MailingForm
+        raise PermissionDenied
 
 
 class MailingAttemptListView(LoginRequiredMixin, ListView):
