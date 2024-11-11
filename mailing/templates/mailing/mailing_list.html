@@ -12,18 +12,16 @@
             </tr>
             </thead>
             <tbody>
-            {% for mailing in mailings %}
+            {% for mailing in object_list %}
                 <tr>
                     <td>{{ mailing.description }}</td>
                     <td>{{ mailing.message }}</td>
                     <td>
                         <a href="{% url 'mailing:mailing_detail' mailing.pk %}"
                            class="btn btn-info btn-sm">Просмотреть</a>
-                        {% if user.is_authenticated %}
+                        {% if user == mailing.owner or user.is_superuser or perms.mailing.can_deactivate_mailing %}
                             <a href="{% url 'mailing:mailing_update' mailing.pk %}" class="btn btn-warning btn-sm">Изменить</a>
-                        {% if user.is_authenticated and user.is_superuser or not perms.mailing.can_deactivate_mailing %}
-                        <a href="{% url 'mailing:mailing_delete' mailing.pk %}" class="btn btn-danger btn-sm">Удалить</a>
-                            {% endif %}
+                            <a href="{% url 'mailing:mailing_delete' mailing.pk %}" class="btn btn-danger btn-sm">Удалить</a>
                         {% endif %}
                     </td>
                 </tr>
