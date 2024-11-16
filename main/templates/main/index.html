@@ -33,7 +33,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ blog.title }}</h5>
                                 <p class="card-text">{{ blog.content|truncatewords:20 }}...</p>
-                                <a href="{% url 'blog:blog_detail' blog.slug %}" class="btn btn-primary">Читать полностью</a>
+                                <a href="{% url 'blog:blog_detail_slug' blog.slug %}" class="btn btn-primary">Читать полностью</a>
                             </div>
                         </div>
                     </div>
