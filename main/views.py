@@ -20,5 +20,4 @@ def IndexView(request):
         'total_mailings': total_mailings,
         'active_mailings': active_mailings,
         'unique_clients_count': unique_clients_count,
-        #'random_articles': random_articles,
     })
