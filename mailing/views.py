@@ -10,28 +10,6 @@ from mailing.models import Client, Message, Mailing, MailingAttempt
 from mailing.services import get_cached_articles
 
 
-class MainPage(View):
-    """Выводит статистику"""
-    def get(self, request, *args, **kwargs):
-        total_mailings = Mailing.objects.count()
-        print(total_mailings)
-        active_mailings = Mailing.objects.filter(status="started").count()
-        print(active_mailings)
-        unique_clients_count = Client.objects.distinct().count()
-        print(unique_clients_count)
-
-        random_articles = get_cached_articles()
-
-        context = {
-            "total_mailings": total_mailings,
-            "active_mailings": active_mailings,
-            "unique_clients_count": unique_clients_count,
-            "random_articles": random_articles,
-        }
-        print("hello")
-        return render(request, "mailing/index.html", context)
-
-
 # CRUD для клиентов
 class ClientListView(ListView):
     model = Client
